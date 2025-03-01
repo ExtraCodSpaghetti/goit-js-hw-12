@@ -17,8 +17,8 @@ let query = '';
 let lightbox;
 
 loader.style.display = 'none';
+loadMoreBtn.classList.add('is-hidden'); // Скрываем кнопку изначально
 
-// для ініціалізації модального вікна
 const galleryModal = new SimpleLightbox('.gallery a', {
   captions: true,
   captionsData: 'alt',
@@ -31,7 +31,7 @@ const onFormSubmit = async event => {
 
   query = event.currentTarget.elements.user_query.value.trim();
   page = 1;
-  loadMoreBtn.classList.add('is-hidden');
+  loadMoreBtn.classList.add('is-hidden'); // Скрываем кнопку при новом поиске
   loader.style.display = 'block';
 
   if (query === '') {
@@ -56,6 +56,7 @@ const onFormSubmit = async event => {
       });
       return;
     }
+
     const markup = renderPhotoCards(data.hits);
     galleryContainer.insertAdjacentHTML('beforeend', markup);
 
@@ -67,12 +68,21 @@ const onFormSubmit = async event => {
     lightbox.refresh();
 
     formEl.reset();
+    loader.style.display = 'none';
 
-    if (data.totalHits > 1) {
-      loadMoreBtn.classList.remove('is-hidden');
-
-      loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
+    // Если пришло меньше 40 изображений, показываем уведомление и НЕ показываем кнопку
+    if (data.hits.length < 40) {
+      iziToast.info({
+        title: 'Info',
+        position: 'topRight',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
+      return;
     }
+
+    // Иначе показываем кнопку "Загрузить еще"
+    loadMoreBtn.classList.remove('is-hidden');
+    loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
   } catch (error) {
     console.log(error);
   } finally {
@@ -82,19 +92,32 @@ const onFormSubmit = async event => {
 
 formEl.addEventListener('submit', onFormSubmit);
 
-const onLoadMoreBtnClick = async event => {
+const onLoadMoreBtnClick = async () => {
   loader.style.display = 'block';
   page++;
+
   try {
     const { data } = await fetchPhotos(query, page);
     loader.style.display = 'none';
+
+    if (!data.hits.length) {
+      iziToast.info({
+        title: 'Info',
+        position: 'topRight',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
+      loadMoreBtn.classList.add('is-hidden');
+      loadMoreBtn.removeEventListener('click', onLoadMoreBtnClick);
+      return;
+    }
 
     const markup = renderPhotoCards(data.hits);
     galleryContainer.insertAdjacentHTML('beforeend', markup);
     smoothScroll();
     lightbox.refresh();
 
-    if (page * 40 >= data.totalHits) {
+    // Если загружено меньше 40 изображений, скрываем кнопку и показываем сообщение
+    if (data.hits.length < 40) {
       iziToast.info({
         title: 'Info',
         position: 'topRight',
