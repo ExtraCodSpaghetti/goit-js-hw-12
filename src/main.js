@@ -94,7 +94,7 @@ const onLoadMoreBtnClick = async event => {
     smoothScroll();
     lightbox.refresh();
 
-    if (page * 15 >= data.totalHits) {
+    if (page * 40 >= data.totalHits) {
       iziToast.info({
         title: 'Info',
         position: 'topRight',
