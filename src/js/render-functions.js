@@ -10,14 +10,29 @@ export const renderPhotoCards = photoData => {
         comments,
         downloads,
       }) =>
-        `<a href="${largeImageURL}" class="gallery-item">
+        `
+    <a href="${largeImageURL}" class="gallery-item">
   <div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" width="360" />
-  <div class="photo-info">
-    <p class="photo-info-item">Likes<span>${likes}</span></p>
-	<p class="photo-info-item">Views<span>${views}</span></p>
-	<p class="photo-info-item">Comments<span>${comments}</span></p>
-	<p class="photo-info-item">Downloads<span>${downloads}</span></p>
+  <img src="${webformatURL}" alt="${tags}" class="gallery-image" loading="lazy" width="360" />
+  <div>
+    <ul class="inform">
+                    <li class="inform-link">
+                        <h2 class="inform-title">Likes:</h2>
+                        <p class="inform-dan">${likes}</p>
+                    </li>
+                    <li class="inform-link">
+                        <h2 class="inform-title">Views:</h2>
+                        <p class="inform-dan">${views}</p>
+                    </li>
+                    <li class="inform-link">
+                        <h2 class="inform-title">Comments:</h2>
+                        <p class="inform-dan">${comments}</p>
+                    </li>
+                    <li class="inform-link">
+                        <h2 class="inform-title">Downloads:</h2>
+                        <p class="inform-dan">${downloads}</p>
+                    </li>
+                </ul>
   </div>
   </div>
   </a>`

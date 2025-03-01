@@ -61,7 +61,8 @@ form button {
   margin-top: 8px;
 }
 
-form button:hover {
+form button:hover,
+.load-more-btn:hover {
   background: #6c8cff;
 }
 
@@ -93,8 +94,8 @@ form textarea {
   gap: 30px;
   text-decoration: none;
 }
-.group-form {
-  margin-top: 40px;
+.form-search {
+  margin: 40px;
 }
 
 .loader {
@@ -128,14 +129,24 @@ form textarea {
 }
 
 .load-more-btn {
-  width: 100px;
   margin-left: auto;
   margin-right: auto;
   display: block;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 95px;
+  height: 40px;
+  background: #4e75ff;
+  font-weight: 500;
+  color: #fff;
+  border: none;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .load-more-btn.is-hidden {
   display: none;
+}
+li {
+  list-style-type: none;
 }

@@ -7,7 +7,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { fetchPhotos } from './js/pixabay-api';
 import { renderPhotoCards } from './js/render-functions';
 
-const formEl = document.querySelector('.group-form');
+const formEl = document.querySelector('.form-search');
 const galleryContainer = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 const loadMoreBtn = document.querySelector('.load-more-btn');
@@ -17,6 +17,13 @@ let query = '';
 let lightbox;
 
 loader.style.display = 'none';
+
+// для ініціалізації модального вікна
+const galleryModal = new SimpleLightbox('.gallery a', {
+  captions: true,
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
 const onFormSubmit = async event => {
   event.preventDefault();
@@ -52,7 +59,7 @@ const onFormSubmit = async event => {
     const markup = renderPhotoCards(data.hits);
     galleryContainer.insertAdjacentHTML('beforeend', markup);
 
-    lightbox = new SimpleLightbox('.gallery', {
+    lightbox = new SimpleLightbox('.gallery-item', {
       captions: true,
       captionsData: 'alt',
       captionDelay: 250,
